@@ -37,3 +37,7 @@ module "autoscaling" {
   max_size           = var.max_size
   alb_sg_id = module.alb.alb_sg_id
 }
+
+module "lambda" {
+  source     = "./modules/lambda"
+}
