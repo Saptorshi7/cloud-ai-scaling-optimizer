@@ -35,4 +35,5 @@ module "autoscaling" {
   desired_capacity   = var.desired_capacity
   min_size           = var.min_size
   max_size           = var.max_size
+  alb_sg_id = module.alb.alb_sg_id
 }

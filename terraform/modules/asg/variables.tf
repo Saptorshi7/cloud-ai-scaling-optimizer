@@ -9,7 +9,7 @@ variable "target_group_arn" {
 }
 variable "key_name" {
   type = string
-  default = ""
+  default = "spl"
 }
 variable "instance_type" {
   type = string
@@ -25,7 +25,6 @@ variable "max_size" {
 }
 variable "alb_sg_id" {
   type = string
-  default = ""
 }
 variable "ssh_allowed_cidrs" {
   type = list(string)

@@ -1,6 +1,6 @@
 #!/bin/bash
 yum update -y
-yum install -y nginx
+amazon-linux-extras install nginx1
 cat > /usr/share/nginx/html/index.html <<EOF
 <html>
   <head><title>Demo Autoscaled Web</title></head>
