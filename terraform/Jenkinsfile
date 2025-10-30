@@ -2,25 +2,22 @@ pipeline {
     agent any
 
     environment {
-        AWS_CREDS = credentials('aws-cred-json')
+        AWS_ACCESS_KEY_ID     = credentials('aws-access-key-id')
+        AWS_SECRET_ACCESS_KEY = credentials('aws-secret-access-key')
+        AWS_SESSION_TOKEN     = credentials('aws-session-token')
     }
 
     stages {
-        stage('Setup AWS Creds') {
-            steps {
-                script {
-                    def creds = readJSON text: "${AWS_CREDS}"
-                    env.AWS_ACCESS_KEY_ID = creds.AWS_ACCESS_KEY_ID
-                    env.AWS_SECRET_ACCESS_KEY = creds.AWS_SECRET_ACCESS_KEY
-                    env.AWS_SESSION_TOKEN = creds.AWS_SESSION_TOKEN
-                }
-            }
-        }
-
         stage('Terraform Init') {
             steps {
                 sh 'terraform init'
             }
+        }
+    }
+
+    post {
+        always {
+            cleanWs()
         }
     }
 }
