@@ -9,7 +9,9 @@ pipeline {
     stages {
         stage('Terraform Init') {
             steps {
-                terraform init
+                sh '''
+                  terraform init
+                '''
             }
         }
     }
