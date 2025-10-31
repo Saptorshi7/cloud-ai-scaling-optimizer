@@ -7,12 +7,13 @@ pipeline {
     }
 
     stages {
-        stage('Terraform Init') {
+        stage('Terraform') {
             steps {
                 sh '''
                   cd terraform
                   terraform init
                   terraform plan -out=tfplan -no-color
+                  terraform apply --auto-approve
                 '''
             }
         }
