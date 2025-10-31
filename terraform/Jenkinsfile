@@ -10,6 +10,7 @@ pipeline {
         stage('Terraform Init') {
             steps {
                 sh '''
+                  cd terraform
                   terraform init
                   terraform plan -out=tfplan
                 '''
