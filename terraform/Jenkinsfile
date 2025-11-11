@@ -5,6 +5,8 @@ pipeline {
         AWS_ACCESS_KEY_ID     = credentials('aws_access_key_id')
         AWS_SECRET_ACCESS_KEY = credentials('aws_secret_access_key')
         TF_CLI_ARGS            = "-no-color"
+        JMETER_HOME = "/opt/jmeter"  // Update to your path
+        REPORT_DIR  = "jmeter-report"
     }
 
     stages {
@@ -26,6 +28,18 @@ pipeline {
                 sh '''
                   cd terraform
                   terraform apply --auto-approve tfplan
+                '''
+            }
+        }
+
+        stage('Run Load Test') {
+            steps {
+                sh '''
+                  mkdir -p ${REPORT_DIR}
+                  ${JMETER_HOME}/bin/jmeter -n \
+                    -t tests/test_plan.jmx \
+                    -l ${REPORT_DIR}/result.jtl \
+                    -e -o ${REPORT_DIR}/html-report
                 '''
             }
         }
