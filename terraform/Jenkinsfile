@@ -18,6 +18,9 @@ pipeline {
     stages {
 
         stage('Terraform Init & Plan') {
+            when {
+                expression { return params.DESTROY == true and params.DESTROY == true}
+            }
             steps {
                 sh '''
                   cd terraform
