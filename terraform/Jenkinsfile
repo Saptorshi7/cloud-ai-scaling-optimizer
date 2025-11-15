@@ -39,20 +39,14 @@ pipeline {
             }
         }
 
-        stage('Run Load Test') {
-            when {
-                expression { return params.RUN_LOAD_TEST == true }
-            }
-            steps {
-                sh '''
-                  mkdir -p ${REPORT_DIR}
-                  ${JMETER_HOME}/bin/jmeter -n \
-                    -t tests/test_plan.jmx \
-                    -l ${REPORT_DIR}/result.jtl \
-                    -e -o ${REPORT_DIR}/html-report
-                '''
-            }
-        }
+        stage('Load Test with k6') {
+    steps {
+        sh """
+        k6 run tests/test.js
+        """
+    }
+}
+
 
         stage('Terraform Destroy') {
             when {
