@@ -5,11 +5,18 @@ pipeline {
         AWS_ACCESS_KEY_ID     = credentials('aws_access_key_id')
         AWS_SECRET_ACCESS_KEY = credentials('aws_secret_access_key')
         TF_CLI_ARGS            = "-no-color"
-        JMETER_HOME = "/opt/jmeter"  // Update to your path
-        REPORT_DIR  = "jmeter-report"
+        JMETER_HOME            = "/opt/jmeter"  
+        REPORT_DIR             = "jmeter-report"
+    }
+
+    parameters {
+        booleanParam(name: 'APPLY', defaultValue: true, description: 'Apply Terraform changes')
+        booleanParam(name: 'DESTROY', defaultValue: false, description: 'Destroy Terraform-managed resources')
+        booleanParam(name: 'RUN_LOAD_TEST', defaultValue: false, description: 'Run Load Test after deployment')
     }
 
     stages {
+
         stage('Terraform Init & Plan') {
             steps {
                 sh '''
@@ -33,6 +40,9 @@ pipeline {
         }
 
         stage('Run Load Test') {
+            when {
+                expression { return params.RUN_LOAD_TEST == true }
+            }
             steps {
                 sh '''
                   mkdir -p ${REPORT_DIR}
@@ -55,10 +65,5 @@ pipeline {
                 '''
             }
         }
-    }
-
-    parameters {
-        booleanParam(name: 'APPLY', defaultValue: true, description: 'Apply Terraform changes')
-        booleanParam(name: 'DESTROY', defaultValue: false, description: 'Destroy Terraform-managed resources')
     }
 }
