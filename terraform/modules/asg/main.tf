@@ -90,15 +90,16 @@ resource "aws_autoscaling_group" "asg" {
 
 # Target tracking scaling policy - keep average CPU around target
 resource "aws_autoscaling_policy" "cpu_target_tracking" {
-  name                   = "cpu-target-tracking"
+  name                   = "request-target-tracking"
   autoscaling_group_name = aws_autoscaling_group.asg.name
   policy_type            = "TargetTrackingScaling"
 
   target_tracking_configuration {
     predefined_metric_specification {
-      predefined_metric_type = "ASGAverageCPUUtilization"
+      predefined_metric_type = "ALBTargetGroupRequestCount"
+      resource_label = var.resource_label
     }
-    target_value = 50.0
+    target_value = 100.0
     disable_scale_in = false
   }
 }

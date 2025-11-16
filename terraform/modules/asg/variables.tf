@@ -1,6 +1,9 @@
 variable "vpc_id" {
   type = string
 }
+variable "resource_label" {
+  type = string
+}
 variable "subnet_ids" {
   type = list(string)
 }

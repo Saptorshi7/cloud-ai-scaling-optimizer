@@ -36,6 +36,7 @@ module "autoscaling" {
   min_size           = var.min_size
   max_size           = var.max_size
   alb_sg_id = module.alb.alb_sg_id
+  resource_label = "${module.alb.lb_arn_suffix}/${module.alb.tg_arn_suffix}"
 }
 
 module "lambda" {
