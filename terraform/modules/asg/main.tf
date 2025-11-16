@@ -96,7 +96,7 @@ resource "aws_autoscaling_policy" "cpu_target_tracking" {
 
   target_tracking_configuration {
     predefined_metric_specification {
-      predefined_metric_type = "ALBTargetGroupRequestCount"
+      predefined_metric_type = "ALBRequestCountPerTarget"
       resource_label = var.resource_label
     }
     target_value = 100.0
