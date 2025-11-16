@@ -93,6 +93,7 @@ resource "aws_autoscaling_policy" "cpu_target_tracking" {
   name                   = "request-target-tracking"
   autoscaling_group_name = aws_autoscaling_group.asg.name
   policy_type            = "TargetTrackingScaling"
+  estimated_instance_warmup = 30
 
   target_tracking_configuration {
     predefined_metric_specification {
@@ -101,5 +102,6 @@ resource "aws_autoscaling_policy" "cpu_target_tracking" {
     }
     target_value = 100.0
     disable_scale_in = false
+    
   }
 }
