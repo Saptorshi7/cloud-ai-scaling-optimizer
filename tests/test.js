@@ -1,19 +1,18 @@
-import http from "k6/http";
-import { sleep } from "k6";
+import http from 'k6/http';
+import { sleep } from 'k6';
 
 export const options = {
-  vus: 100,
-  duration: "15m",
+  stages: [
+    { duration: '1m', target: 50 },   // ramp to moderate load
+    { duration: '5m', target: 100 },  // heavy load
+    { duration: '10m', target: 150 }, // overload period
+  ],
+  thresholds: {
+    http_req_duration: ['p(95)<2000'], // optional
+  }
 };
 
 export default function () {
-  // Random burst size 1–5
-  const burst = Math.floor(Math.random() * 5) + 1;
-
-  for (let i = 0; i < burst; i++) {
-    http.get("http://demo-alb-1642533398.us-east-1.elb.amazonaws.com");
-  }
-
-  // Random short pause 50ms–300ms
-  sleep(Math.random() * 0.25 + 0.05);
+  http.get('http://demo-alb-1642533398.us-east-1.elb.amazonaws.com');
+  sleep(0.1);
 }
