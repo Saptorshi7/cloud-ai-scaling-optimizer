@@ -100,7 +100,7 @@ resource "aws_autoscaling_policy" "cpu_target_tracking" {
       predefined_metric_type = "ALBRequestCountPerTarget"
       resource_label = var.resource_label
     }
-    target_value = 100.0
+    target_value = 100000.0
     disable_scale_in = false
     
   }
