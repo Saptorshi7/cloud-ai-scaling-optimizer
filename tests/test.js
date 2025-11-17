@@ -13,6 +13,6 @@ export const options = {
 };
 
 export default function () {
-  http.get('http://demo-alb-1642533398.us-east-1.elb.amazonaws.com');
+  http.get('http://demo-alb-1008157944.us-east-1.elb.amazonaws.com');
   sleep(0.1);
 }
