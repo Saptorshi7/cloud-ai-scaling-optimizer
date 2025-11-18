@@ -107,6 +107,5 @@ resource "aws_autoscaling_policy" "predictive_scaling" {
     mode                        = "ForecastOnly"   # or "ForecastAndScale"
     scheduling_buffer_time      = 300              # seconds
     max_capacity_breach_behavior = "HonorMaxCapacity"
-    max_capacity_buffer          = 0
   }
 }
