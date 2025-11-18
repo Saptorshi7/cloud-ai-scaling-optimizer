@@ -98,6 +98,11 @@ resource "aws_autoscaling_policy" "predictive_scaling" {
     metric_specification {
       target_value = 100000.0   # ✔ REQUIRED FOR PREDICTIVE SCALING
 
+      predefined_load_metric_specification {
+        predefined_metric_type = "ASGTotalCPUUtilization"
+        resource_label         = var.resource_label
+      }
+
       predefined_scaling_metric_specification {
         predefined_metric_type = "ALBRequestCountPerTarget"
         resource_label         = var.resource_label
