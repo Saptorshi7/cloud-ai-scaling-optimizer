@@ -89,19 +89,30 @@ resource "aws_autoscaling_group" "asg" {
 }
 
 # Target tracking scaling policy - keep average CPU around target
-resource "aws_autoscaling_policy" "cpu_target_tracking" {
-  name                   = "request-target-tracking"
-  autoscaling_group_name = aws_autoscaling_group.asg.name
-  policy_type            = "TargetTrackingScaling"
-  estimated_instance_warmup = 30
+resource "aws_autoscaling_policy" "cpu_predictive_scaling" {
+  name                   = "request-predictive-scaling"
+  autoscaling_group_name    = aws_autoscaling_group.asg.name
+  policy_type             = "PredictiveScaling"
+  estimated_instance_warmup = 30  # Warm-up period (same as before)
 
-  target_tracking_configuration {
-    predefined_metric_specification {
-      predefined_metric_type = "ALBRequestCountPerTarget"
-      resource_label = var.resource_label
+  predictive_scaling_configuration {
+    metric_specification {
+      predefined_metric_type = "ALBRequestCountPerTarget"  # Metric used for scaling
+      resource_label         = var.resource_label
     }
-    target_value = 100000.0
-    disable_scale_in = false
+
+    target_value          = 100000.0  # Target value remains the same
+    disable_scale_in      = false  # Allow scale-in as well
+
+    // Predictive Scaling Configuration Settings:
+    // `mode` - defines whether to use "Forecast" or "Dynamic" scaling
+    mode = "Forecast"  # Forecast-based scaling (could also use "Dynamic" for dynamic predictive scaling)
     
+    // `predictive_scaling` specific settings
+    prediction_interval    = "10m"  # Time granularity for prediction (10 minutes, or 1 hour, etc.)
+    forecast_forward_minutes = 120  # Number of minutes into the future to forecast for (2 hours in this example)
+
+    // Optional - You could adjust the scaling adjustment based on forecast
+    // `target_capacity` and `estimated_instance_warmup` could remain the same
   }
 }
