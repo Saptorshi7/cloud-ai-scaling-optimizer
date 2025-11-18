@@ -99,7 +99,7 @@ resource "aws_autoscaling_policy" "predictive_scaling" {
       target_value = 100000.0   # ✔ REQUIRED FOR PREDICTIVE SCALING
 
       predefined_scaling_metric_specification {
-        predefined_metric_type = "ALBTargetGroupRequestCount"
+        predefined_metric_type = "ALBRequestCountPerTarget"
         resource_label         = var.resource_label
       }
     }
